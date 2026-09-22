@@ -29,6 +29,16 @@ def list_tasks():
         status = "[x]" if t["done"] else "[ ]"
         print(f"{t['id']}. {status} {t['title']}")
 
+def complete_task(task_id):
+    tasks = load_tasks()
+    for t in tasks:
+        if t["id"] == task_id:
+            t["done"] = True
+            save_tasks(tasks)
+            print(f"Task {task_id} completed.")
+            return
+    print("Task not found.")
+
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python task.py [add <task_name> | list]")
@@ -36,5 +46,7 @@ if __name__ == "__main__":
         add_task(" ".join(sys.argv[2:]))
     elif sys.argv[1] == "list":
         list_tasks()
+    elif sys.argv[1] == "done" and len(sys.argv) > 2:
+        complete_task(int(sys.argv[2]))    
     else:
         print("Invalid command.")
